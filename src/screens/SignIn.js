@@ -1,12 +1,42 @@
 import React, { useState } from "react";
-import { Text, TextInput, View, StatusBar, StyleSheet, TouchableOpacity, } from "react-native";
+import {
+  Text,
+  TextInput,
+  View,
+  StatusBar,
+  StyleSheet,
+  TouchableOpacity,
+} from "react-native";
 import { Feather } from "@expo/vector-icons";
 import MyButton from "../components/MyButton";
 import { useNavigation } from "@react-navigation/native";
+import { useAuth } from "../context/useAuth";
 
 export default function SignIn() {
-  const navigation = useNavigation();
+  const navigation = useNavigation()
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
+  const { signIn } = useAuth();
+
+  async function handleSubmit() {
+    try {
+      setError("")
+      await signIn({ email, password })
+
+    }
+    catch (error) {
+      if (error.response && error.response.data && error.response.data.mensagem) {
+        setError(error.response.data.mensagem)
+      }
+      else {
+        setError("Falha no login. Verifique suas credenciais .")
+      }
+    }
+  }
+
   return (
+
     <View style={style.container}>
       <TouchableOpacity onPress={() => navigation.goBack()}>
         <Feather name="chevron-left" size={32} color="#8a8787" />
@@ -17,14 +47,24 @@ export default function SignIn() {
       </View>
       <View style={{ gap: 16 }}>
         <View style={style.inputBox}>
-          <Feather name="mail" size={24} color="#8a8787" />
-          <TextInput style={style.input} placeholder="Digite seu email" placeholderTextColor="#8a8787" keyboardType="email-address" />
+          <Feather name="mail" size={32} color="#8a8787" />
+          <TextInput style={style.input}
+            placeholder="Digite seu email"
+            placeholderTextColor="#8a8787"
+            keyboardType="email-address"
+            value={email}
+            onChangeText={(text) => setEmail(text)} />
         </View>
         <View style={style.inputBox}>
-          <Feather name="lock" size={24} color="#8a8787" />
-          <TextInput style={style.input} placeholder="Digite sua senha" placeholderTextColor="#8a8787" secureTextEntry />
+          <Feather name="lock" size={32} color="#8a8787" />
+          <TextInput placeholder="Digite sua senha"
+            placeholderTextColor="#8a8787"
+            secureTextEntry
+            value={password}
+            onChangeText={(text) => setPassword(text)} />
         </View>
-        <MyButton text="Login" style={{ width: "100%" }} />
+        {error && <Text>{error}</Text>}
+        <MyButton onPress={()=>handleSubmit()} text="Login" style={{ width: "100%" }} />
       </View>
     </View>
   );
@@ -74,3 +114,4 @@ const style = StyleSheet.create({
     marginVertical: 16,
   },
 });
+
