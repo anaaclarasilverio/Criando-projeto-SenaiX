@@ -20,23 +20,23 @@ export default function SignUp() {
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
 
-   async function handleSubmit(){
+  async function handleSubmit() {
     setError("");
-    if(!email.trim()||!password.trim()||!username.trim()){
+    if (!email.trim() || !password.trim() || !username.trim()) {
       setError("Por favor, preencha todos os campos!");
       return;
     }
-    try{
-      await api.post("register",{
+    try {
+      await api.post("register", {
         email,
         username,
         password,
       });
       Alert.alert("Sucesso", "Usuário criado com sucesso!")
     }
-    catch (error){
-      if(error.response) {
-        setError(error.response.data.message);
+    catch (err) {
+      if (err.response) {
+        setError(err.response.data.message);
       }
       setError("Não foi possível se conectar com o servidor ")
     }
@@ -52,30 +52,30 @@ export default function SignUp() {
         <Text style={style.title}>Estamos quase lá.</Text>
         <Text style={style.subtitle}>Faça seu login para começar a utilizar o app.</Text>
       </View>
-      
+
       <View style={{ gap: 16 }}>
-      <View style={style.inputBox}>
+        <View style={style.inputBox}>
           <Feather name="user" size={32} color="#8a8787" />
           <TextInput style={style.input} placeholder="Digite seu nome" placeholderTextColor="#8a8787" value={username}
-           onChangeText={(text) => setUsername(text)} />
+            onChangeText={(text) => setUsername(text)} />
         </View>
         <View style={style.inputBox}>
           <Feather name="mail" size={32} color="#8a8787" />
-          <TextInput style={style.input} 
-          placeholder="Digite seu email"
-           placeholderTextColor="#8a8787" 
-           keyboardType="email-address"
-           value={email}
-           onChangeText={(text) => setEmail(text)} />
+          <TextInput style={style.input}
+            placeholder="Digite seu email"
+            placeholderTextColor="#8a8787"
+            keyboardType="email-address"
+            value={email}
+            onChangeText={(text) => setEmail(text)} />
         </View>
         <View style={style.inputBox}>
           <Feather name="lock" size={32} color="#8a8787" />
           <TextInput placeholder="Digite sua senha" placeholderTextColor="#8a8787" secureTextEntry value={password}
-           onChangeText={(text) => setPassword(text)} />
-           
+            onChangeText={(text) => setPassword(text)} />
+
         </View>
-        {error &&<Text style={style.erro}>{error} </Text>}
-        <MyButton onPress={() => handleSubmit() } text="Cadastrar" style={{width:"100%"}}/>
+        {error && <Text style={style.erro}>{error} </Text>}
+        <MyButton onPress={() => handleSubmit()} text="Cadastrar" style={{ width: "100%" }} />
       </View>
     </View>
   );

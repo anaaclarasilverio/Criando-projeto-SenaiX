@@ -64,7 +64,7 @@ export default function SignIn() {
             onChangeText={(text) => setPassword(text)} />
         </View>
         {error && <Text>{error}</Text>}
-        <MyButton onPress={()=>handleSubmit()} text="Login" style={{ width: "100%" }} />
+        <MyButton onPress={() => handleSubmit()} text="Login" style={{ width: "100%" }} />
       </View>
     </View>
   );

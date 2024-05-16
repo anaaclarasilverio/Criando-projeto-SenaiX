@@ -3,6 +3,7 @@ import { Image, StatusBar, StyleSheet, Text, View } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import Logo from "../assets/logo.png";
 import MyButton from "../components/MyButton";
+import SignIn from "./SignIn";
 
 export default function Start() {
   const navigation = useNavigation();
